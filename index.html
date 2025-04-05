@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Battle of Hong Kong 1941</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Header with game stats -->
+ <div id="ui-header">
+    <div id="supplies">Supplies: <span id="supply-count">50</span></div>
+    <div id="wave-counter">Wave: <span id="wave-number">0</span></div>
+    <div id="wave-progress">Wave Progress: <span id="enemies-remaining">0/0</span></div>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="speed-controls">
+        <button id="speed-1x" class="speed-btn active">1x</button>
+        <button id="speed-2x" class="speed-btn">2x</button>
+    </div>
+    <button id="start-wave">Start Wave</button>
+<button id="redeploy-btn" title="Redeploy a soldier"><img src="https://i.ebayimg.com/images/g/pfIAAOSw1QxfwrEQ/s-l1200.jpg" alt="Redeploy" style="width: 15px; height: 20px;">Redeploy a soldier</button> 
+<!-- Replace with your icon URL -->
+</div>
+
+        <!-- Unit selection bar -->
+        <div id="unit-selection">
+            <div class="unit" data-type="royal-scots" data-cost="10" draggable="true">
+                <img src="https://i.imgur.com/rkEzkDE.png" alt="Royal Scots">
+                <div class="unit-name">2nd Royal Scots</div>
+                <div class="unit-cost">Cost: 10</div>
+                <div class="tooltip">2nd Royal Scots<br>Damage: 5<br>Range: 4</div>
+            </div>
+            <div class="unit" data-type="winnipeg-grenadiers" data-cost="20" draggable="true">
+                <img src="https://i.imgur.com/bR9vveb.png" alt="Winnipeg Grenadiers">
+                <div class="unit-name">Winnipeg Grenadiers</div>
+                <div class="unit-cost">Cost: 20</div>
+                <div class="tooltip">Winnipeg Grenadiers<br>Damage: 10<br>Range: 4</div>
+            </div>
+            <div class="unit" data-type="royal-rifles" data-cost="25" draggable="true">
+                <img src="https://i.imgur.com/AM628F8.png" alt="Royal Rifles">
+                <div class="unit-name">Royal Rifles</div>
+                <div class="unit-cost">Cost: 25</div>
+                <div class="tooltip">Royal Rifles<br>Damage: 15<br>Range: 5</div>
+            </div>
+            <div class="unit" data-type="middlesex" data-cost="30" draggable="true">
+                <img src="https://i.imgur.com/1iRftzs.png" alt="Middlesex">
+                <div class="unit-name">1st Middlesex</div>
+                <div class="unit-cost">Cost: 30</div>
+                <div class="tooltip">1st Middlesex<br>Damage: 8<br>Range: 5</div>
+            </div>
+            <div class="unit" data-type="rajputs" data-cost="15" draggable="true">
+                <img src="https://i.imgur.com/rkEzkDE.png" alt="Rajputs">
+                <div class="unit-name">5/7th Rajputs</div>
+                <div class="unit-cost">Cost: 15</div>
+                <div class="tooltip">5/7th Rajputs<br>Damage: 7<br>Range: 3</div>
+            </div>
+            <div class="unit" data-type="hkvdc" data-cost="5" draggable="true">
+                <img src="https://i.imgur.com/dKsmPMp.png" alt="HKVDC">
+                <div class="unit-name">HKVDC</div>
+                <div class="unit-cost">Cost: 5</div>
+            </div>
+                <div class="tooltip">HKVDC<br>Damage: 3<br>Range: 3</div>
+        </div>
+
+        <!-- Battlefield grid -->
+        <div id="battlefield"></div>
+
+        <!-- Game over screen -->
+        <div id="game-over" style="display: none;"></div>
+
+        <!-- Drag ghost for drag-and-drop -->
+        <div id="drag-ghost" style="position: absolute; pointer-events: none;"></div>
+    </div>
+    <script src="script.js"></script>
+<audio id="shoot-sound" src="https://freesound.org/data/previews/276/276955_3249668-lq.mp3" preload="auto"></audio> <!-- Replace with your sound URL -->
+    <script src="script.js"></script>
+</body>
+</html>

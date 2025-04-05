@@ -1,0 +1,639 @@
+/* styles.css */
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and background */
+body {
+    font-family: 'Georgia', serif;
+    background: url('https://i.imgur.com/njPQNhB.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #d6c6aa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Game container */
+#game-container {
+    position: relative;
+    width: 700px;
+    background-color: #2e2e2e;
+    border: 2px solid #704214;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    padding: 20px;
+}
+
+/* UI header */
+#ui-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    background-color: rgba(46, 46, 46, 0.9);
+    border: 2px solid #704214;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+#supplies, #wave-counter {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d6c6aa;
+}
+
+#supplies span, #wave-counter span {
+    color: #a67c52;
+}
+
+#start-wave {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #704214;
+    color: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#start-wave:hover {
+    background-color: #a67c52;
+    color: #1a1a1a;
+    transform: scale(1.05);
+}
+
+#start-wave:active {
+    transform: scale(0.95);
+}
+
+#redeploy-btn:{
+front-size:10px;
+}
+
+/* Unit selection bar */
+#unit-selection {
+    display: flex;
+    gap: 10px;
+    background: linear-gradient(135deg, #3c3c3c, #2e2e2e);
+    padding: 10px;
+    border: 2px solid #704214;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.unit {
+    width: 90px;
+    height: 120px;
+    background-color: rgba(46, 46, 46, 0.9);
+    border: 2px solid #704214;
+    border-radius: 8px;
+    cursor: grab;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.unit img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 5px;
+}
+
+.unit-name {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    color: #d6c6aa;
+}
+
+.unit-cost {
+    font-size: 10px;
+    text-align: center;
+    color: #a67c52;
+}
+
+.unit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.unit:hover .tooltip {
+    visibility: visible;
+}
+
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    top: -90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #d6c6aa;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #704214;
+    font-size: 12px;
+    text-align: center;
+    white-space: pre-line;
+    z-index: 10;
+}
+
+/* Battlefield grid */
+#battlefield {
+    display: grid;
+    grid-template-columns: repeat(10, 64px);
+    grid-template-rows: repeat(5, 64px);
+    width: 640px;
+    height: 320px;
+    position: relative;
+    background: transparent;
+    border: 2px solid #704214;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cell {
+    width: 64px;
+    height: 64px;
+    background-size: 64px 64px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #666;
+    position: relative;
+}
+
+.cell.drag-over {
+    background-color: rgba(74, 124, 89, 0.3);
+    background-blend-mode: overlay;
+}
+
+.cell.fortified {
+    background-color: rgba(112, 66, 20, 0.4); /* Bronze tint for fortified terrain */
+    background-blend-mode: overlay;
+    border: 2px solid #704214; /* Reinforced border */
+}
+
+/* Tower styles */
+.tower {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.tower img {
+    width: 64px;
+    height: 64px;
+}
+
+.tower:hover .upgrade-btn,
+.tower:hover button:not(.upgrade-btn) {
+    display: block;
+}
+
+.upgrade-btn,
+.tower button:not(.upgrade-btn) { /* Style for ability buttons */
+    display: none;
+    position: absolute;
+    bottom: 5px;
+    background-color: #4a7c59;
+    color: #f5f5f5;
+    border: none;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Disabled upgrade button */
+.upgrade-btn.disabled {
+    background-color: #666;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Banzai aura effect */
+.enemy.banzai::after {
+    content: '';
+    position: absolute;
+    width: 96px; /* Larger aura */
+    height: 96px;
+    background: url('https://i.imgur.com/KrqKRSA.png') no-repeat center;
+    background-size: contain;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: banzaiPulse 3s forwards; /* Matches 3s duration */
+}
+
+/* Banzai text */
+.banzai-text {
+    position: absolute;
+    color: #ff0000; /* Red */
+    font-size: 16px;
+    font-weight: bold;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: fadeOut 3s forwards;
+}
+
+/* Miniboss announcement */
+#announcement {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #d6c6aa;
+    padding: 10px 20px;
+    border: 2px solid #a63a3a;
+    border-radius: 5px;
+    font-size: 18px;
+    z-index: 100;
+    display: none;
+}
+
+/* Ensure stars are visible */
+.tower .star {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: url('blob:https://imgur.com/f3a47be7-067b-4d9c-9688-91e596657c33') no-repeat center; /* Replace with your star image */
+    background-size: contain;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+}
+
+.upgrade-btn {
+    right: 5px;
+}
+
+.tower button:not(.upgrade-btn) { /* Ability button (e.g., Boost) */
+    left: 5px;
+    background-color: #704214; /* Bronze for distinction */
+}
+
+.upgrade-btn:hover,
+.tower button:not(.upgrade-btn):hover {
+    background-color: #5a9c69; /* Lighter green for upgrade */
+}
+
+.tower button:not(.upgrade-btn):hover {
+    background-color: #a67c52; /* Lighter bronze for ability */
+}
+
+/* Enemy styles */
+.enemy {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: left 0.05s linear; /* Smooth movement */
+}
+
+.enemy img {
+    width: 64px;
+    height: 64px;
+}
+
+.enemy-name {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #d6c6aa;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.health-bar {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 64px;
+    height: 5px;
+    background-color: #a63a3a;
+    transition: width 0.2s ease; /* Smooth health bar updates */
+}
+
+/* Bug notification */
+#bug-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #d6c6aa;
+    padding: 10px 20px;
+    border: 2px solid #a63a3a;
+    border-radius: 5px;
+    font-size: 18px;
+    z-index: 100;
+    display: none;
+}
+
+/* Bullet and explosion effects */
+.bullet {
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    background-color: #d4a017;
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgba(212, 160, 23, 0.8); /* Glow effect */
+}
+
+.explosion {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #d4a017, #a63a3a);
+    border-radius: 50%;
+    animation: explode 0.3s forwards; /* Faster explosion */
+}
+
+@keyframes explode {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes flash {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.5); }
+    100% { filter: brightness(1); }
+}
+
+/* Supply drop styles */
+.supply-drop {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-color: #d6c6aa; /* Soft gold for visibility */
+    border: 2px solid #704214;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #2e2e2e;
+    transition: transform 0.2s ease;
+}
+
+.supply-drop:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(214, 198, 170, 0.8); /* Glow effect */
+}
+
+.supply-drop::after {
+    content: '+20'; /* Visual indicator of supply value */
+}
+
+/* Game over screen */
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #a63a3a;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border: 2px solid #704214;
+    border-radius: 10px;
+    display: none;
+    z-index: 20;
+    text-align: center;
+}
+
+#game-over button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #704214;
+    color: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#game-over button:hover {
+    background-color: #a67c52;
+    color: #1a1a1a;
+    transform: scale(1.05);
+}
+
+/* Drag ghost */
+#drag-ghost {
+    position: absolute;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.7;
+}
+
+#drag-ghost img {
+    width: 64px;
+    height: 64px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    #game-container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    #battlefield {
+        width: 100%;
+        height: auto;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+    }
+
+    .cell {
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+    }
+
+    .unit {
+        width: 80px;
+        height: 100px;
+    }
+
+    .unit img {
+        width: 50px;
+        height: 50px;
+    }
+
+    #ui-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #start-wave {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .tower img, .enemy img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .supply-drop {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+    }
+}
+
+/* Highlight for selected/dragged soldiers */
+.unit.selected, .tower.selected {
+    border: 3px solid #d4a017; /* Yellow highlight */
+    box-shadow: 0 0 10px rgba(212, 160, 23, 0.8);
+}
+
+/* Bigger and more obvious boost aura effect */
+.tower.aura-active::after {
+    content: '';
+    position: absolute;
+    width: 192px; /* Increased from 128px */
+    height: 192px;
+    background: radial-gradient(circle, rgba(212, 160, 23, 0.7), rgba(212, 160, 23, 0)); /* Stronger opacity */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: pulse 1.5s infinite; /* Faster pulse */
+}
+
+/* Updated Rajputs melee effect with silver color */
+.tower.special-attack::before {
+    content: '';
+    position: absolute;
+    width: 80px; /* Wider effect */
+    height: 20px; /* Taller slash */
+    background: linear-gradient(to right, silver, transparent); /* Silver color */
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%) rotate(45deg); /* Diagonal slash */
+    animation: slash 0.7s forwards; /* Slower for visibility */
+    box-shadow: 0 0 10px silver; /* Glow effect */
+}
+
+/* Beautiful "Bang" effect (Japanese cartoon style) */
+.fire-text {
+    position: absolute;
+    color: #ff4500; /* Bright orange-red */
+    font-size: 12px; /* Smaller font */
+    font-family: 'Comic Sans MS', sans-serif; /* Cartoonish font */
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #fff; /* Outline effect */
+    animation: bang 0.4s forwards;
+}
+
+/* Battle cry and reaction text */
+.battle-cry, .hit-reaction {
+    position: absolute;
+    font-size: 12px;
+    color: #d6c6aa;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 5px;
+    border-radius: 3px;
+    animation: fadeOut 4s forwards;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Redeploy button in UI header */
+#redeploy-btn {
+    padding: 5px;
+    background-color: #a67c52;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#redeploy-btn:hover {
+    background-color: #d4a017;
+    transform: scale(1.05);
+}
+
+#redeploy-btn img {
+    vertical-align: middle;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+}
+
+@keyframes slash {
+    0% { opacity: 1; transform: translateY(-50%) rotate(45deg) translateX(0); }
+    100% { opacity: 0; transform: translateY(-50%) rotate(45deg) translateX(80px); }
+}
+
+@keyframes bang {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    50% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5) rotate(0deg); }
+}
+
+@keyframes banzaiPulse {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+
+/* Progress bar */
+#progress-bar-container {
+    width: 100px;
+    height: 10px;
+    background: #333;
+    border: 1px solid #704214;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #4a7c59; /* Green progress */
+    transition: width 0.5s ease;
+}
