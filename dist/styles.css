@@ -167,6 +167,7 @@ front-size:10px;
 .cell {
     width: 64px;
     height: 64px;
+    background-image: url('https://i.imgur.com/JjWIVeX.png');
     background-size: 64px 64px;
     background-repeat: no-repeat;
     background-position: center;
@@ -180,7 +181,7 @@ front-size:10px;
 }
 
 .cell.fortified {
-    background-color: rgba(112, 66, 20, 0.4); /* Bronze tint for fortified terrain */
+background-image: url('https://i.imgur.com/JjWIVeX.png'); /* Bronze tint for fortified terrain */
     background-blend-mode: overlay;
     border: 2px solid #704214; /* Reinforced border */
 }
